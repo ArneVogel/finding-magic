@@ -1,0 +1,12 @@
+[package]
+name = "finding-magic"
+version = "0.1.0"
+authors = ["arnevogel <arnevogel96@gmail.com>"]
+
+[dependencies]
+num-integer = "0.1"
+serde = "*"
+serde_json = "*"
+combinations = { path = "../combinations" }
+permutations = { path = "../permutations" }
+rayon = "1.0"
