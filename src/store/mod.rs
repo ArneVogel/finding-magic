@@ -48,7 +48,7 @@ pub fn load(config_file: String) -> MagicSquare {
         .read_line(&mut deserialization_string)
         .expect("couldnt get deserialization_string from file");
 
-    let mut intermediate_results: HashMap<String, HashSet<Vec<u32>>> = HashMap::new();
+    let mut intermediate_results: HashMap<String, HashSet<Vec<i64>>> = HashMap::new();
 
     if deserialization_string.len() > 2 {
         intermediate_results = serde_json::from_str(&deserialization_string).unwrap();
@@ -64,12 +64,12 @@ pub fn load(config_file: String) -> MagicSquare {
     let tmp_file: String = prefix.to_owned() + "_tmp." + &suffix.to_owned();
 
     return MagicSquare {
-        n: options[0].parse::<u32>().unwrap(),
-        cmax: options[1].parse::<u32>().unwrap(),
+        n: options[0].parse::<i64>().unwrap(),
+        cmax: options[1].parse::<i64>().unwrap(),
         calc: Calculator::new(options[5].to_owned(), options[6].to_owned()),
         negatives: negatives_allowed,
         magicType: options[4].to_owned().to_string(),
-        min_value: options[2].parse::<u32>().unwrap(),
+        min_value: options[2].parse::<i64>().unwrap(),
         config_file: config_file,
         solution_file: solution_file,
         tmp_file: tmp_file,

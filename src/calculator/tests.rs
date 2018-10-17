@@ -19,8 +19,8 @@ fn calculator_result() {
         vec![
             1 + 2 + 3,
             1 * 2 * 3,
-            (1_u32.pow(2)) + (2_u32.pow(2)) + (3_u32.pow(2)),
-            (1_u32.pow(2)) * (2_u32.pow(2)) * (3_u32.pow(2)),
+            (1_i64.pow(2)) + (2_i64.pow(2)) + (3_i64.pow(2)),
+            (1_i64.pow(2)) * (2_i64.pow(2)) * (3_i64.pow(2)),
         ],
         calc.calculate(vec![1, 2, 3])
     );

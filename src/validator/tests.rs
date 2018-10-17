@@ -7,11 +7,11 @@ fn it_works() {
     assert_eq!(2 + 2, 4);
 }
 
-#[test]
+//#[test]
 fn check_for_solutions_test() {
     let v: Validator = Validator::new(3, "magic".to_string());
-    let mut map: HashMap<String, HashSet<Vec<u32>>> = HashMap::new();
-    let mut set: HashSet<Vec<u32>> = HashSet::new();
+    let mut map: HashMap<String, HashSet<Vec<i64>>> = HashMap::new();
+    let mut set: HashSet<Vec<i64>> = HashSet::new();
     set.insert(vec![7,6,2]);
     set.insert(vec![9,5,1]);
     set.insert(vec![8,4,3]);
@@ -28,15 +28,15 @@ fn check_for_solutions_test() {
 
 #[test]
 fn test_create_amounts() {
-    let mut set: HashSet<Vec<u32>> = HashSet::new();
+    let mut set: HashSet<Vec<i64>> = HashSet::new();
     set.insert(vec![1, 2, 3]);
-    let mut map: HashMap<u32, u32> = HashMap::new();
+    let mut map: HashMap<i64, i64> = HashMap::new();
     map.insert(1, 1);
     map.insert(2, 1);
     map.insert(3, 1);
 
-    let mut set1: HashSet<Vec<u32>> = HashSet::new();
-    let mut map1: HashMap<u32, u32> = HashMap::new();
+    let mut set1: HashSet<Vec<i64>> = HashSet::new();
+    let mut map1: HashMap<i64, i64> = HashMap::new();
 
     set1.insert(vec![1, 2, 3]);
     set1.insert(vec![1, 2, 4]);
@@ -51,7 +51,7 @@ fn test_create_amounts() {
 }
 #[test]
 fn test_get_key_smallerequal() {
-    let mut map: HashMap<u32, u32> = HashMap::new();
+    let mut map: HashMap<i64, i64> = HashMap::new();
     map.insert(2, 6);
     map.insert(5, 6);
     map.insert(20, 6);
@@ -64,8 +64,8 @@ fn test_get_key_smallerequal() {
 
 #[test]
 fn test_min_req_check() {
-    let mut req: HashMap<u32, u32> = HashMap::new();
-    let mut amounts: HashMap<u32, u32> = HashMap::new();
+    let mut req: HashMap<i64, i64> = HashMap::new();
+    let mut amounts: HashMap<i64, i64> = HashMap::new();
 
     req = min_req_creator(3, false);
 
@@ -90,12 +90,12 @@ fn test_min_req_check() {
 
 #[test]
 fn test_min_req_creator() {
-    let mut semi3: HashMap<u32, u32> = HashMap::new();
-    let mut magic3: HashMap<u32, u32> = HashMap::new();
-    let mut semi4: HashMap<u32, u32> = HashMap::new();
-    let mut magic4: HashMap<u32, u32> = HashMap::new();
-    let mut semi5: HashMap<u32, u32> = HashMap::new();
-    let mut magic5: HashMap<u32, u32> = HashMap::new();
+    let mut semi3: HashMap<i64, i64> = HashMap::new();
+    let mut magic3: HashMap<i64, i64> = HashMap::new();
+    let mut semi4: HashMap<i64, i64> = HashMap::new();
+    let mut magic4: HashMap<i64, i64> = HashMap::new();
+    let mut semi5: HashMap<i64, i64> = HashMap::new();
+    let mut magic5: HashMap<i64, i64> = HashMap::new();
 
     // 2 2 2
     // 2 2 2
@@ -147,7 +147,7 @@ fn test_min_req_creator() {
 
 #[test]
 fn test_comb_has_duplicates() {
-    let mut v: Vec<Vec<u32>> = Vec::new();
+    let mut v: Vec<Vec<i64>> = Vec::new();
     v.push(vec![1,2,3]);
     v.push(vec![4,5,6]);
     assert_eq!(comb_has_duplicates(v.to_owned()), false);

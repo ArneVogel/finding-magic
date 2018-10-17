@@ -9,12 +9,12 @@ use rayon::prelude::*;
 
 pub struct Validator {
     magic_type: MagicSquareType,
-    min_req: HashMap<u32, u32>,
-    n: u32,
+    min_req: HashMap<i64, i64>,
+    n: i64,
 }
 
 impl Validator {
-    pub fn new(n: u32, magic_type_string: String) -> Validator {
+    pub fn new(n: i64, magic_type_string: String) -> Validator {
         let mut magic_type = MagicSquareType::Magic;
         let mut semi_magic = false;
         if magic_type_string.contains("semi") {
@@ -31,8 +31,8 @@ impl Validator {
     //checks all of intermediate results for a valid solution
     pub fn check_for_solution(
         &self,
-        intermediate_results: HashMap<String, HashSet<Vec<u32>>>,
-        cmax: u32,
+        intermediate_results: HashMap<String, HashSet<Vec<i64>>>,
+        cmax: i64,
     ) -> bool {
         //println!("{:?}", intermediate_results);
         let mut found_atleast_one: bool = false;
@@ -61,7 +61,7 @@ impl Validator {
 
             //println!("not skipping: {:?}", set);
 
-            let mut solutions_vec: Vec<Vec<u32>> = Vec::new();
+            let mut solutions_vec: Vec<Vec<i64>> = Vec::new();
             for item in set.1.iter() {
                 solutions_vec.push(item.to_vec());
             }
@@ -99,8 +99,8 @@ impl Validator {
                 while comb_perm.has_next() {
                     // Iterate over all ways to arange a b c, d e f, g h i
 
-                    let mut perm_counter: Vec<u32> = vec![0; self.n as usize];
-                    let mut perm_permer: Vec<Permutations<u32>> = Vec::new();
+                    let mut perm_counter: Vec<i64> = vec![0; self.n as usize];
+                    let mut perm_permer: Vec<Permutations<i64>> = Vec::new();
                     for perm in comb_perm.get_permutation().iter() {
                         perm_permer.push(Permutations::new(perm.to_vec()));
                     }
@@ -108,7 +108,7 @@ impl Validator {
                         //this loop goes over all permutations of the combinations and checks
                         //if its a valid solutions with the avaliable vectors
 
-                        let mut v: Vec<Vec<u32>> = Vec::new();
+                        let mut v: Vec<Vec<i64>> = Vec::new();
                         for perm in perm_permer.iter() {
                             v.push(perm.get_permutation().to_owned());
                         }
@@ -147,7 +147,6 @@ impl Validator {
                 }
                 comb.next();
             }
-            //}
         });
         return found_atleast_one.to_owned();
     }
@@ -158,12 +157,12 @@ impl Validator {
     //permutation, the permutation has to be sorted first
     fn check_solution(
         &self,
-        permutation: Vec<Vec<u32>>,
-        resulting_vecs: HashSet<Vec<u32>>,
+        permutation: Vec<Vec<i64>>,
+        resulting_vecs: HashSet<Vec<i64>>,
     ) -> bool {
-        let mut to_find: Vec<Vec<u32>> = Vec::new();
-        let mut tv: Vec<u32> = Vec::new(); //temporary vector
-        let mut all_e: Vec<u32> = Vec::new();
+        let mut to_find: Vec<Vec<i64>> = Vec::new();
+        let mut tv: Vec<i64> = Vec::new(); //temporary vector
+        let mut all_e: Vec<i64> = Vec::new();
         for v in permutation.iter() {
             tv = v.to_owned();
             tv.sort_by(|a, b| b.cmp(a));
@@ -185,7 +184,7 @@ impl Validator {
         //4 5 6
         //7 8 9
         for i in 0..permutation.len() {
-            let mut v: Vec<u32> = Vec::new();
+            let mut v: Vec<i64> = Vec::new();
             for j in 0..self.n {
                 v.push(permutation[j as usize][i as usize]);
             }
@@ -193,8 +192,8 @@ impl Validator {
             to_find.push(v);
         }
 
-        let mut v: Vec<u32> = Vec::new();
-        let mut w: Vec<u32> = Vec::new();
+        let mut v: Vec<i64> = Vec::new();
+        let mut w: Vec<i64> = Vec::new();
         for i in 0..permutation.len() {
             v.push(permutation[i as usize][i as usize]);
             w.push(permutation[i][(self.n as usize - i) - 1 as usize]);
@@ -220,7 +219,7 @@ impl Validator {
 
 // true = satisfies min_req
 // false = doesnt satisfie min req
-fn min_req_check(mut min_req: HashMap<u32, u32>, amounts: HashMap<u32, u32>) -> bool {
+fn min_req_check(mut min_req: HashMap<i64, i64>, amounts: HashMap<i64, i64>) -> bool {
     amounts
         .iter()
         .for_each(|s| match get_key_smallerequal(min_req.to_owned(), *s.1) {
@@ -237,8 +236,8 @@ fn min_req_check(mut min_req: HashMap<u32, u32>, amounts: HashMap<u32, u32>) -> 
     return min_req.len() == 0;
 }
 
-fn comb_has_duplicates(comb: Vec<Vec<u32>>) -> bool {
-    let mut set: HashSet<u32> = HashSet::new();
+fn comb_has_duplicates(comb: Vec<Vec<i64>>) -> bool {
+    let mut set: HashSet<i64> = HashSet::new();
     for vec in comb.iter() {
         for v in vec.iter() {
             if set.contains(v) {
@@ -250,8 +249,8 @@ fn comb_has_duplicates(comb: Vec<Vec<u32>>) -> bool {
     return false;
 }
 
-fn create_amounts(set: HashSet<Vec<u32>>) -> HashMap<u32, u32> {
-    let mut counter: HashMap<u32, u32> = HashMap::new();
+fn create_amounts(set: HashSet<Vec<i64>>) -> HashMap<i64, i64> {
+    let mut counter: HashMap<i64, i64> = HashMap::new();
     set.iter().for_each(|vec| {
         vec.iter().for_each(|n| {
             let c = counter.entry(*n).or_insert(0);
@@ -261,16 +260,16 @@ fn create_amounts(set: HashSet<Vec<u32>>) -> HashMap<u32, u32> {
     counter
 }
 
-fn create_amounts_from_vec(vec: Vec<Vec<u32>>) -> HashMap<u32, u32> {
-    let mut set: HashSet<Vec<u32>> = HashSet::new();
+fn create_amounts_from_vec(vec: Vec<Vec<i64>>) -> HashMap<i64, i64> {
+    let mut set: HashSet<Vec<i64>> = HashSet::new();
     for v in vec {
         set.insert(v.to_owned());
     }
     return create_amounts(set);
 }
 
-fn min_req_creator(n: u32, semi_magic: bool) -> HashMap<u32, u32> {
-    let mut v: Vec<Vec<u32>> = Vec::new();
+fn min_req_creator(n: i64, semi_magic: bool) -> HashMap<i64, i64> {
+    let mut v: Vec<Vec<i64>> = Vec::new();
     for i in 0..n {
         v.push(vec![0; n as usize]);
     }
@@ -286,7 +285,7 @@ fn min_req_creator(n: u32, semi_magic: bool) -> HashMap<u32, u32> {
         }
     }
 
-    let mut map: HashMap<u32, u32> = HashMap::new();
+    let mut map: HashMap<i64, i64> = HashMap::new();
     v.iter().for_each(|p| {
         //println!("{:?}", p);
         p.iter().for_each(|n| {
@@ -298,13 +297,13 @@ fn min_req_creator(n: u32, semi_magic: bool) -> HashMap<u32, u32> {
     return map;
 }
 
-fn get_key_smallerequal(map: HashMap<u32, u32>, n: u32) -> Option<u32> {
-    let mut key: u32 = 0;
-    let mut value = u32::min_value();
+fn get_key_smallerequal(map: HashMap<i64, i64>, n: i64) -> Option<i64> {
+    let mut key: i64 = 0;
+    let mut value = i64::min_value();
     map.iter().for_each(|m| {
         if *m.0 == n {
             key = *m.0;
-            value = u32::max_value();
+            value = i64::max_value();
             return;
         }
         if *m.0 > value && *m.0 < n {
@@ -313,7 +312,7 @@ fn get_key_smallerequal(map: HashMap<u32, u32>, n: u32) -> Option<u32> {
         }
     });
 
-    if value != u32::min_value() {
+    if value != i64::min_value() {
         return Some(key);
     }
     return None;

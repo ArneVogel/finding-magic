@@ -48,17 +48,17 @@ impl Calculator {
         };
     }
 
-    pub fn calculate_string(&self, numbers: Vec<u32>) -> String {
+    pub fn calculate_string(&self, numbers: Vec<i64>) -> String {
         format!("{:?}", self.calculate(numbers))
     }
-    pub fn calculate(&self, numbers: Vec<u32>) -> Vec<u32> {
+    pub fn calculate(&self, numbers: Vec<i64>) -> Vec<i64> {
         if numbers.len() <= 1 {
             return numbers;
         }
-        let mut results: Vec<u32> = Vec::new();
+        let mut results: Vec<i64> = Vec::new();
         for power in self.powers.iter() {
             for func in self.functions.iter() {
-                let mut tmp: u32 = 0;
+                let mut tmp: i64 = 0;
                 for i in 0..numbers.len() - 1 {
                     if i == 0 {
                         match func {
